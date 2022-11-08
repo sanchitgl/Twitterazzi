@@ -117,7 +117,7 @@ spacy-transformers==1.1.5
 srsly==2.4.3
 stack-data==0.2.0
 starlette==0.17.1
-streamlit==1.10.0
+streamlit==1.14.0
 terminado==0.13.3
 textblob==0.17.1
 thinc==8.0.15
@@ -138,6 +138,7 @@ tzdata==2022.1
 tzlocal==4.2
 urllib3==1.26.9
 uvicorn==0.17.6
+vaderSentiment==3.3.2
 validators==0.18.2
 wasabi==0.9.1
 watchdog==2.1.7
