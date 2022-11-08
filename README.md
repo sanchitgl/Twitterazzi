@@ -1,5 +1,5 @@
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/sanchitgoel7/twitterazi/main/app.py)
-# Twitterazi : See what your Favourite Influencers are tweeting about!
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://twitterazzi.streamlit.app/)
+# Twitterazzi : See what your Favourite Influencers are tweeting about!
 
 Twitterazzi is an app that allows users to get an overview of the topics a particular twitter user has tweeted about in the past month. 
 
