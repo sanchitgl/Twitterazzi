@@ -15,7 +15,7 @@ It retrieves tweets of the provided user id from twitter api and returns entitie
 <img src="https://user-images.githubusercontent.com/105559691/171841482-ec800ccd-83a6-475a-89c0-7a18fc57cf24.png" width="700"/>
 
 4. Find User's overall sentiment and filter tweets accordingly. The app uses Vader's Sentiment Analyzer for detecting the polarity in tweets.
-<img src="https://user-images.githubusercontent.com/105559691/200684983-35c3fdd1-412c-48a7-83c7-e44932321dd5.png" width="700"/>
+<img src="https://user-images.githubusercontent.com/105559691/200685278-b41965bb-7e50-4190-9e59-06a69774e403.png" width="700"/>
 
 
 5. Choose and filter tweets (in a chronological order) on any of the keywords found:
