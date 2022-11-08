@@ -219,9 +219,9 @@ def plot_bar_chart(data,X,Y):
         alt.Chart(data).configure_title(fontSize=20)
         .mark_bar()
         .encode(
-            x=alt.X(X, type="nominal", title="", axis = alt.Axis(labelAngle=0,labelOverlap=False,labelAlign ='center',labelFontSize=10.5)),
+            x=alt.X(X, type="nominal", title="", axis = alt.Axis(labelAngle=0,labelOverlap=False,labelAlign ='center',labelFontSize=10.5), sort = 'descending'),
             y=alt.Y(Y, type="quantitative", title=""),
-            color = alt.Color(X, legend=None),
+            color = alt.Color(X, legend=None, sort = 'descending'),
             # color=alt.condition(
             # alt.datum[Y] > 0,
             # alt.value("#74c476"),  # The positive color
