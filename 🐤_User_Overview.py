@@ -35,8 +35,8 @@ def landing_page():
         state.fig = {}
 
     submit, ids = get_usernames()
-    print(submit)
-    print(ids)
+    #print(submit)
+    #print(ids)
     #print(ids)    
     if submit == True:
         state.submit = True
@@ -72,7 +72,7 @@ def landing_page():
             display_locations(loc_entities, response['data'])
             #set_ent = set(list_of_entities)       
             #st.write(set_ent)
-            st.markdown("##")
+            st.markdown("&nbsp;")
             st.subheader('Sentiment Analysis:')
             pos_tweets = []
             neg_tweets = []
@@ -116,7 +116,7 @@ def landing_page():
                 else:
                     st.dataframe(neu_tweets_df)
 
-            st.markdown("##")
+            st.markdown("&nbsp;")
             st.subheader('Keywords:')
             top_words = sorted(wordcloud.words_ , key=wordcloud.words_.get, reverse = True)[:20]
             key_tweets = get_tweets_wKeyword(top_words,response['data'])
@@ -161,7 +161,7 @@ def landing_page():
                 display_locations(loc_entities, response['data'])
                 #set_ent = set(list_of_entities)       
                 #st.write(set_ent)
-                st.markdown("##")
+                st.markdown("&nbsp;")
                 st.subheader('Sentiment Analysis:')
                 pos_tweets = []
                 neg_tweets = []
@@ -204,7 +204,7 @@ def landing_page():
                         st.dataframe(neg_tweets_df)
                     else:
                         st.dataframe(neu_tweets_df)
-                st.markdown("##")
+                st.markdown("&nbsp;")
                 #print('donee')
                 st.subheader('Keywords:')
                 top_words = sorted(wordcloud.words_ , key=wordcloud.words_.get, reverse = True)[:20]
