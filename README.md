@@ -1,7 +1,7 @@
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/sanchitgoel7/twitterazi/main/app.py)
 # Twitterazi : See what your Favourite Influencers are tweeting about!
 
-Twitterazi is an app that allows users to get an overview of the topics a particular twitter user has tweeted about in the past month. 
+Twitterazzi is an app that allows users to get an overview of the topics a particular twitter user has tweeted about in the past month. 
 
 It retrieves tweets of the provided user id from twitter api and returns entities and keywrods found within the tweets. Which can then be used to filter out the tweets that contained any of the words.
 
@@ -14,6 +14,9 @@ It retrieves tweets of the provided user id from twitter api and returns entitie
 
 <img src="https://user-images.githubusercontent.com/105559691/171841482-ec800ccd-83a6-475a-89c0-7a18fc57cf24.png" width="700"/>
 
-4. Choose and filter tweets (in a chronological order) on any of the keywords found:
+4. Find User's overall sentiment and filter tweets accordingly. The app uses Vader's Sentiment Analyzer for detecting the polarity in tweets.
+<img src="https://user-images.githubusercontent.com/105559691/200673533-fcf547a6-da20-4c4d-b038-66c89deaa97a.png" width="700"/>
+
+5. Choose and filter tweets (in a chronological order) on any of the keywords found:
 <img src="https://user-images.githubusercontent.com/105559691/171842542-4cc9fb11-e02c-4569-b0a0-1dc3e2d4af55.png" width="600"/>
 <img src="https://user-images.githubusercontent.com/105559691/171842850-a25c6cc1-f644-4233-ab84-24431464af85.png" width="600"/>
