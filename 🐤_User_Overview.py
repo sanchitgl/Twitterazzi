@@ -21,7 +21,7 @@ config.read('config/config.ini')
 
 def landing_page():
     #st.set_page_config(layout="wide")
-    st.title("Twitterazi")
+    st.title("Twitterazzi")
     st.subheader("See what your favourite influencers are tweeting about:")
     state = st.session_state
 
