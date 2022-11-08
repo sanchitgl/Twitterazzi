@@ -42,7 +42,7 @@ def get_tweets(usernames,config):
 
     df = pd.DataFrame(data, columns=columns)
     df['Date']= pd.to_datetime(df['Date'], format = "%Y-%m-%d")
-    df = df.loc[df['Date'] >= '2022-4-19']
+    df = df.loc[df['Date'] >= '2022-8-19']
     df = df.sort_values(by='Date')
     print(df)
 

@@ -5,13 +5,16 @@ import matplotlib.pyplot as plt
 import matplotlib
 from UI.get_visuals import get_wordcloud
 import time
-
+from textblob import TextBlob
+import pandas as pd
 #from fastapi import FastAPI, Request
 import json
 import configparser
+import altair as alt
 
 from Consolidation.get_tweets import get_tweets
 from NLP.main import analyse_tweet
+from NLP.main import get_tweet_sent
 
 config = configparser.ConfigParser()
 config.read('config/config.ini')
@@ -47,7 +50,7 @@ def landing_page():
             
             #fig = state.fig
             st.pyplot(plot_wordcloud(wordcloud))  
-           
+            
             st.header('Entities:')
             person_entities = []
             org_entities = []
@@ -69,16 +72,57 @@ def landing_page():
             display_locations(loc_entities, response['data'])
             #set_ent = set(list_of_entities)       
             #st.write(set_ent)
+            st.markdown("##")
+            st.subheader('Sentiment Analysis:')
+            pos_tweets = []
+            neg_tweets = []
+            neu_tweets = []
+            for sent_dict_ in response['sentiment']:
+                if sent_dict_['sentiment'] > 0.05:
+                    pos_tweets.append({
+                        'tweet' : sent_dict_['tweet'],
+                        'sentiment' : sent_dict_['sentiment']
+                        })
+                elif sent_dict_['sentiment'] < -0.05:
+                    neg_tweets.append({
+                        'tweet' : sent_dict_['tweet'],
+                        'sentiment' : sent_dict_['sentiment']
+                        })
+                else:
+                    neu_tweets.append({
+                        'tweet' : sent_dict_['tweet'],
+                        'sentiment' : sent_dict_['sentiment']
+                    }) 
+            pos_tweets_df = pd.DataFrame(pos_tweets)
+            neg_tweets_df = pd.DataFrame(neg_tweets)
+            neu_tweets_df = pd.DataFrame(neu_tweets)
 
-            #print('donee')
+            chart, sent_tweets = st.columns([1,2])
+            with chart:
+                sent_chart = pd.DataFrame({
+                    'Sentiment' : ['Positive', 'Neutral', 'Negative'],
+                    'Count' : [len(pos_tweets_df),len(neu_tweets_df), len(neu_tweets_df)]
+                    
+                })
+                plot_bar_chart(sent_chart,'Sentiment','Count')
+            with sent_tweets:
+                sentiment = st.radio(
+                    "Sentiment Select",
+                    ('Postive', 'Neutral', 'Negative'), label_visibility = 'collapsed', horizontal = True)
+                if sentiment == 'Postive':
+                    st.dataframe(pos_tweets_df)
+                elif sentiment == 'Negative':
+                    st.dataframe(neg_tweets_df)
+                else:
+                    st.dataframe(neu_tweets_df)
+
+            st.markdown("##")
             st.subheader('Keywords:')
             top_words = sorted(wordcloud.words_ , key=wordcloud.words_.get, reverse = True)[:20]
             key_tweets = get_tweets_wKeyword(top_words,response['data'])
             count = 1
-            if key_tweets:
-                for tweet in key_tweets:
-                    st.write(str(count) + ". "+tweet)
-                    count += 1
+            if len(key_tweets['Tweets']) > 0:
+                        st.dataframe(key_tweets['Tweets'])
         except:
             st.error("Please input a valid Twitter username. Try 'Potus' or 'rihanna'")
         #for word in top_words:
@@ -117,18 +161,79 @@ def landing_page():
                 display_locations(loc_entities, response['data'])
                 #set_ent = set(list_of_entities)       
                 #st.write(set_ent)
+                st.markdown("##")
+                st.subheader('Sentiment Analysis:')
+                pos_tweets = []
+                neg_tweets = []
+                neu_tweets = []
+                for sent_dict_ in response['sentiment']:
+                    if sent_dict_['sentiment'] > 0.05:
+                        pos_tweets.append({
+                            'tweet' : sent_dict_['tweet'],
+                            'sentiment' : sent_dict_['sentiment']
+                            })
+                    elif sent_dict_['sentiment'] < -0.05:
+                        neg_tweets.append({
+                            'tweet' : sent_dict_['tweet'],
+                            'sentiment' : sent_dict_['sentiment']
+                            })
+                    else:
+                        neu_tweets.append({
+                            'tweet' : sent_dict_['tweet'],
+                            'sentiment' : sent_dict_['sentiment']
+                        }) 
+                pos_tweets_df = pd.DataFrame(pos_tweets)
+                neg_tweets_df = pd.DataFrame(neg_tweets)
+                neu_tweets_df = pd.DataFrame(neu_tweets)
 
+                chart, sent_tweets = st.columns([1,2])
+                with chart:
+                    sent_chart = pd.DataFrame({
+                        'Sentiment' : ['Positive', 'Neutral', 'Negative'],
+                        'Count' : [len(pos_tweets_df),len(neu_tweets_df), len(neu_tweets_df)]
+                        
+                    })
+                    plot_bar_chart(sent_chart,'Sentiment','Count')
+                with sent_tweets:
+                    sentiment = st.radio(
+                        "Sentiment Select",
+                        ('Postive', 'Neutral', 'Negative'), label_visibility = 'collapsed', horizontal = True)
+                    if sentiment == 'Postive':
+                        st.dataframe(pos_tweets_df)
+                    elif sentiment == 'Negative':
+                        st.dataframe(neg_tweets_df)
+                    else:
+                        st.dataframe(neu_tweets_df)
+                st.markdown("##")
                 #print('donee')
                 st.subheader('Keywords:')
                 top_words = sorted(wordcloud.words_ , key=wordcloud.words_.get, reverse = True)[:20]
                 key_tweets = get_tweets_wKeyword(top_words,response['data'])
-                count = 1
-                if key_tweets:
-                    for tweet in key_tweets:
-                        st.write(str(count) + ". "+tweet)
-                        count += 1
+                if len(key_tweets['Tweets']) > 0:
+                    st.dataframe(key_tweets['Tweets'])
             except:
                 st.error("Please input a valid Twitter username. Try 'Potus' or 'rihana")
+
+def plot_bar_chart(data,X,Y):
+    chart = (
+        alt.Chart(data).configure_title(fontSize=20)
+        .mark_bar()
+        .encode(
+            x=alt.X(X, type="nominal", title="", axis = alt.Axis(labelAngle=0,labelOverlap=False,labelAlign ='center',labelFontSize=10.5)),
+            y=alt.Y(Y, type="quantitative", title=""),
+            color = alt.Color(X, legend=None),
+            # color=alt.condition(
+            # alt.datum[Y] > 0,
+            # alt.value("#74c476"),  # The positive color
+            # alt.value("#d6616b")  # The negative color
+            # ),
+            tooltip = [alt.Tooltip(Y, title="",format='.1f')]
+            #color=alt.Color("variable", type="nominal", title=""),
+            #order=alt.Order("variable", sort="descending"),
+        )
+    )
+    
+    st.altair_chart(chart, use_container_width=True)
 
 def run_bot(Request):
     #input = await request.json()
@@ -136,17 +241,22 @@ def run_bot(Request):
     #print(ids)
     tweets_keys = []
     tweets_entites = []
+    tweets_sentiment = []
     df_tweets = get_tweets(ids,config)
     #print(df_tweets)
     
     for tweet in df_tweets['Tweet']:
         entities,keywords =  analyse_tweet(tweet)
+        polarity, subjectivity  = get_tweet_sent(tweet)
         dict_e = {'tweet':tweet,'entities':entities}
         dict_k = {'tweet':tweet,'keywords':keywords}
+        dict_s = {'tweet':tweet,'sentiment':polarity}
         tweets_entites.append(dict_e)
         tweets_keys.append(dict_k)
+        tweets_sentiment.append(dict_s)
         #print(keywords)
-    response = {'entities': tweets_entites, 'keywords': tweets_keys, 'data': df_tweets['Tweet']}
+    print(tweets_sentiment)
+    response = {'entities': tweets_entites, 'keywords': tweets_keys, 'sentiment':tweets_sentiment,'data': df_tweets['Tweet']}
     return response
 
 #@st.cache(hash_funcs={matplotlib.figure.Figure: hash}, suppress_st_warning=True)
@@ -167,7 +277,10 @@ def get_tweets_wKeyword(top_words,tweets):
     option = st.selectbox('',top_words)
     tweets = list(tweets )
     key_tweets = [tweet for tweet in tweets if option in tweet]
-    return key_tweets
+    key_tweets_df = pd.DataFrame({
+        'Tweets' : key_tweets
+    })
+    return key_tweets_df
 
 def get_usernames():
     with st.form(key = 'usernames', clear_on_submit=True):
