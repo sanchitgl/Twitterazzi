@@ -101,7 +101,7 @@ def landing_page():
             with chart:
                 sent_chart = pd.DataFrame({
                     'Sentiment' : ['Positive', 'Neutral', 'Negative'],
-                    'Count' : [len(pos_tweets_df),len(neu_tweets_df), len(neu_tweets_df)]
+                    'Count' : [len(pos_tweets_df),len(neu_tweets_df), len(neg_tweets_df)]
                     
                 })
                 plot_bar_chart(sent_chart,'Sentiment','Count')
@@ -190,7 +190,7 @@ def landing_page():
                 with chart:
                     sent_chart = pd.DataFrame({
                         'Sentiment' : ['Positive', 'Neutral', 'Negative'],
-                        'Count' : [len(pos_tweets_df),len(neu_tweets_df), len(neu_tweets_df)]
+                        'Count' : [len(pos_tweets_df),len(neu_tweets_df), len(neg_tweets_df)]
                         
                     })
                     plot_bar_chart(sent_chart,'Sentiment','Count')
